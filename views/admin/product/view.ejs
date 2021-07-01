@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<%- include('../layout/headerScripts') %>
+
+    <body class="hold-transition sidebar-mini skin-blue">
+        <div class="wrapper">
+            <%- include('../layout/header') %>
+                <%- include('../layout/nav') %>
+                    <div class="content-wrapper">
+                        <section class="content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="box box-info">
+                                        <div class="box-header">
+                                            <h4>
+                                                <center>View Products</center>
+                                            </h4>
+                                            <a href="/admin/add-product" class="btn btn-info pull-right">Add
+                                                product</a>
+                                        </div>
+                                        <div class="box-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col"> # </th>
+                                                        <th scope="col">PRODUCT IMAGE</th>
+                                                        <th scope="col">PRODUCT NAME</th>
+                                                        <th scope="col">CATEGORY</th>
+                                                        <th scope="col">RATE</th>
+                                                        <th scope="col">OFFER</th>
+                                                        <th scope="col" style="text-align:center">ACTION</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% if(fetchData.length!=0){ var i=1;
+                                                        fetchData.forEach(function(data){ %>
+                                                        <tr>
+                                                            <td><%=i; %></td>
+                                                            <td><img src="/<%=data.image %>" width="60" height="60" /></td>
+                                                            <td><%=data.name %></td>
+                                                            <td><%=data.category %></td>
+                                                            <td><%=data.rate %></td>
+                                                            <td><%=data.isoffer %></td>
+                                                            <td style="text-align:center">
+                                                                <a href="/admin/edit-product/<%=data.id%>"><button type="button" class="btn btn-success">Edit</button></a>
+                                                                <a href="/admin/delete-product/<%=data.id%>"><button type="button" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button></a>
+                                                            </td>
+                                                        </tr>
+                                                        <% i++; }) %>
+                                                        <% } else{ %>
+                                                        <tr>
+                                                            <td colspan="7">No Data Found</td>
+                                                        </tr>
+                                                        <% } %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <%- include('../layout/footer') %>
+        </div>
+    </body>
+
+</html>

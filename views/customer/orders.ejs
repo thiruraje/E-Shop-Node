@@ -1,0 +1,61 @@
+<%- include('layout/header',{auth:auth}) %>
+
+
+	<div class="breadcrumbs">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="bread-inner">
+						<ul class="bread-list">
+							<li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="blog-single.html">Orders</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <% if(allOrdersInfo.length!=0){ %>
+    <section class="shop checkout section">
+        <div class="container">
+            <div class="row"> 
+                <% allOrdersInfo.forEach(function(data){ %>
+               
+                <div class="col-lg-12 col-12">
+                    <div class="order-details">
+                        <!-- Order Widget -->
+                        <div class="single-widget">
+                            <h2>ORDERS ID : <%=data.order.order_id%></h2>
+                            <div class="content">
+                                <ul>
+                                    <li>Date<span><%= moment(data.order.created).format( 'MMM-DD-YYYY')%></span></li>
+                                    <li class="last">Product<span>Rate</span></li>
+                                    <% data.orderedProducts.forEach(function(product){ %>
+                                        <li><%=product.name%> - (<%=product.qty%>)<span>₹<%=product.rate * product.qty %></span></li>
+                                    <% }) %>
+                                    <li class="last">Shiping Amount<span>₹50</span></li>
+                                    <% if(data.order.isDiscount){ %>
+                                        <li>Discount<span>20%</span></li>
+                                    <%}%>
+                                    <li>Total<span>₹<%=data.order.final_amount%></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+    <% }else{ %>
+		<div class="shopping-cart section">
+			<div class="container">
+				<div class="row">
+					No Data's found
+				</div>
+			</div>
+		</div>
+	<% } %>
+
+
+	<%- include('layout/footer') %>

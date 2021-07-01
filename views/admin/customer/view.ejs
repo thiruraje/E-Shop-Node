@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<%- include('../layout/headerScripts') %>
+
+    <body class="hold-transition sidebar-mini skin-blue">
+        <div class="wrapper">
+            <%- include('../layout/header') %>
+                <%- include('../layout/nav') %>
+                    <div class="content-wrapper">
+                        <section class="content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="box box-info">
+                                        <div class="box-header">
+                                            <h4>
+                                                <center>View Customers</center>
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Mobile</th>
+                                                        <th scope="col">Email</th>
+                                                        <th scope="col" style="text-align:center">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% if(customerData.length!=0){ var i=1;
+                                                        customerData.forEach(function(data){ %>
+                                                        <tr>
+                                                            <td><%=i; %></td>
+                                                            <td><%=data.name %></td>
+                                                            <td><%=data.mobile %></td>
+                                                            <td><%=data.email %></td>
+                                                            <td style="text-align:center">
+                                                                <a href="/admin/detail-customer/<%=data.id%>"><button type="button" class="btn btn-success">Detail</button></a>
+                                                            </td>
+                                                        </tr>
+                                                        <% i++; }) %>
+                                                        <% } else{ %>
+                                                        <tr>
+                                                            <td colspan="7">No Data Found</td>
+                                                        </tr>
+                                                        <% } %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <%- include('../layout/footer') %>
+        </div>
+    </body>
+
+</html>

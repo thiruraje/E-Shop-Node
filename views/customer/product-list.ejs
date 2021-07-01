@@ -1,0 +1,78 @@
+<%- include('layout/header',{auth:auth}) %>
+<div class="breadcrumbs">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="bread-inner">
+						<ul class="bread-list">
+							<li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="blog-single.html">Product List</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<section class="product-area shop-sidebar shop section">
+
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-4 col-12">
+						<div class="shop-sidebar">
+								<!-- Single Widget -->
+								<div class="single-widget category">
+									<h3 class="title">Categories</h3>
+									<ul class="categor-list">
+										<%categoryData.forEach(function(data){ %>
+											<li><a href="/customer/product-category/<%=data.name%>"><%=data.name%></a></li>
+										<% }) %>
+									</ul>
+								</div>
+
+						</div>
+					</div>
+					<div class="col-lg-9 col-md-8 col-12">
+						<div class="row">
+							<div class="col-12">
+								
+	
+							</div>
+						</div>
+						<div class="row">
+							<% productList.forEach(function(data){ %>
+								<div class="col-lg-4 col-md-6 col-12">
+									<div class="single-product">
+										<div class="product-img">
+											<a href="/customer/product-detail/<%=data.id%>">
+												<img class="default-img" src="/<%=data.image %>" alt="#">
+												<img class="hover-img" src="/<%=data.image %>" alt="#">
+												<%if(data.isoffer === "offer"){%>
+													<span class="price-dec">Offer</span>
+												<%}%>
+											</a>
+											<div class="button-head">
+												<div class="product-action">
+													<a title="Compare" href="/customer/add-cart/<%=data.id%>"><i class="ti-bag"></i><span>Add to cart</span></a>
+												</div>
+												<div class="product-action-2">
+													<a title="Add to cart" href="/customer/add-cart/<%=data.id%>">Add to cart</a>
+												</div>
+											</div>
+										</div>
+										<div class="product-content">
+											<h3><a href="/customer/product-detail/<%=data.id%>"><%=data.name%></a></h3>
+											<div class="product-price">
+												<span>₹<%=data.rate%>.00</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+							<% }) %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+<%- include('layout/footer') %>

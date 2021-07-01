@@ -1,0 +1,192 @@
+<%- include('layout/header',{auth:auth}) %>
+<style>
+.error {
+    border: solid 2px #FF0000;  
+}
+</style>
+
+	<div class="breadcrumbs">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="bread-inner">
+						<ul class="bread-list">
+							<li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="blog-single.html">Cart</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Breadcrumbs -->
+
+	<!-- Shopping Cart -->
+	<% if(allCartData.length!=0){ %>
+	<div class="shopping-cart section">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<!-- Shopping Summery -->
+					<table class="table shopping-summery">
+						<thead>
+							<tr class="main-hading">
+								<th>PRODUCT</th>
+								<th>NAME</th>
+								<th class="text-center">UNIT PRICE</th>
+								<th class="text-center">QUANTITY</th>
+								<th class="text-center">TOTAL</th>
+								<th class="text-center"><i class="ti-trash remove-icon"></i></th>
+							</tr>
+						</thead>
+						<tbody>
+							<% allCartData.forEach(function(data){ %>
+								<tr>
+									<td class="image" data-title="No"><img src="/<%=data.image%>" alt="#"></td>
+									<td class="product-des" data-title="Description">
+										<p class="product-name"><a href="#">
+												<%=data.name%>
+											</a></p>
+										<p class="product-des">
+											<%=data.description%>
+										</p>
+									</td>
+									<td class="price" data-title="Price"><span>$<%=data.rate%>.00 </span></td>
+									<td class="qty" data-title="Qty">
+										<!-- Input Order -->
+										<div class="input-group">
+											<div class="button minus">
+												<button type="button" class="btn btn-primary btn-number"
+												onClick="decrement_quantity('<%= data.id %>','<%= data.rate %>')"
+													  data-field="quant[1]">
+													<i class="ti-minus"></i>
+												</button>
+											</div>
+											<input type="text" name="quant[]"  id="input-quantity-<%= data.id %>"
+												class="input-number input-quantity"  value="<%=data.qty%>">
+											<div class="button plus">
+												<button type="button" class="btn btn-primary btn-number"
+													onClick="increment_quantity('<%= data.id %>','<%= data.rate %>')" data-field="quant[]">
+													<i class="ti-plus"></i>
+												</button>
+											</div>
+										</div>
+										<!--/ End Input Order -->
+									</td>
+									<td class="total-amount" data-title="Total">
+										<span
+										id="cart-price-<%= data.id %>">₹<%=data.qty * data.rate %></span></td>
+									<td class="action" data-title="Remove"><a
+											href="/customer/remove-product/<%=data.product_id%>"><i
+												class="ti-trash remove-icon"></i></a></td>
+								</tr>
+								<% }) %>
+						</tbody>
+					</table>
+					<!--/ End Shopping Summery -->
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<!-- Total Amount -->
+					<div class="total-amount">
+						<div class="row">
+							<div class="col-lg-8 col-md-5 col-6">
+								<div class="left">
+									<div class="coupon">
+											<input name="Coupon" id="coupon" class="form-control" placeholder="Enter Your Coupon">
+									</br>
+									<button class="btn" onClick="addCoupon()">Apply</button>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-7 col-12">
+								<div class="right">
+									<ul>
+										<li>Cart Subtotal<span id="sub-price">₹<%=totalPrice%></span></li>
+										<li>Shipping<span>Free</span></li>
+										<li>You Save<span id="save-price">₹0.00</span></li>
+										<li class="last">You Pay<span id="pay-amount">₹<%=totalPrice%></span></li>
+									</ul>
+									<div class="button5">
+										<a href="/customer/checkout" class="btn">Checkout</a>
+										<a href="/customer/product-list" class="btn">Continue shopping</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--/ End Total Amount -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<% }else{ %>
+		<div class="shopping-cart section">
+			<div class="container">
+				<div class="row">
+					No Data's found
+				</div>
+			</div>
+		</div>
+	<% } %>
+
+	<script>
+		function addCoupon() {
+			var couponCode = $("#coupon").val();
+			$.ajax({
+				url : "/customer/add-coupon",
+				data : "coupon_code="+couponCode,
+				type : 'post',
+				success : function(res) {
+					if(res == "success"){
+						$("#coupon").val(' ');
+						$('#coupon').removeClass("error");
+						$("#save-price").text("20%");
+						var sub_total = $("#sub-price").text().replace("₹","");
+						$("#pay-amount").text("₹" + (parseInt(sub_total) - (parseInt(sub_total)*20/100)));
+					}else{
+						$("#coupon").val(' ');
+						$('#coupon').addClass("error");  
+					}
+				}
+			});
+		}
+		function increment_quantity(cart_id, price) {
+			var inputQuantityElement = $("#input-quantity-"+cart_id);
+			var newQuantity = parseInt($(inputQuantityElement).val())+1;
+			var newPrice = newQuantity * price;
+    		save_to_db(cart_id, newQuantity, newPrice);
+
+		}
+		function decrement_quantity(cart_id, price) {
+			var inputQuantityElement = $("#input-quantity-"+cart_id);
+			if($(inputQuantityElement).val() > 1) 
+			{
+				var newQuantity = parseInt($(inputQuantityElement).val()) - 1;
+				var newPrice = newQuantity * price;
+    			save_to_db(cart_id, newQuantity, newPrice);
+			}
+		}
+		function save_to_db(cart_id, new_quantity ,newPrice) {
+		var inputQuantityElement = $("#input-quantity-"+cart_id);
+		var priceElement = $("#cart-price-"+cart_id);
+			$.ajax({
+				url : "/customer/update-qty",
+				data : "cart_id="+cart_id+"&new_quantity="+new_quantity,
+				type : 'post',
+				success : function(data) {
+					$(inputQuantityElement).val(new_quantity);
+					$(priceElement).text("₹"+newPrice);
+					var totalItemPrice = 0;
+					$("span[id*='cart-price-']").each(function() {
+						var cart_price = $(this).text().replace("₹","");
+						totalItemPrice = parseInt(totalItemPrice) + parseInt(cart_price);
+					});
+					$("#sub-price").text("₹"+totalItemPrice);
+					$("#pay-amount").text("₹"+totalItemPrice);
+				}
+			});
+		}
+	</script>
+	<%- include('layout/footer') %>

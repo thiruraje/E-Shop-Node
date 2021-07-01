@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<%- include('../layout/headerScripts') %>
+
+    <body class="hold-transition sidebar-mini skin-blue">
+        <div class="wrapper">
+            <%- include('../layout/header') %>
+                <%- include('../layout/nav') %>
+                    <div class="content-wrapper">
+                        <section class="content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="box box-info">
+                                        <div class="box-header">
+                                            <h4>
+                                                <center>Edit Category</center>
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <form class="form-horizontal" action="/admin/update-category/<%=editData.id%>"
+                                                method="POST">
+                                                <div class="box-body">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div
+                                                                    class="form-group">
+                                                                    <div class="col-sm-10">
+                                                                        <label>Category Name</label>
+                                                                        <input type="text" class="form-control"
+                                                                             name="name"
+                                                                             placeholder="Enter the name"
+                                                                             value="<%=editData.name %> "
+                                                                            id="name">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <div class="col-sm-11">
+                                                                        <button type="submit"
+                                                                            class="btn btn-success btn-block">Save</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <%- include('../layout/footer') %>
+        </div>
+    </body>
+
+</html>

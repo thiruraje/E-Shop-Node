@@ -1,0 +1,179 @@
+<%- include('layout/header',{auth:auth}) %>
+
+
+<div class="breadcrumbs">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="bread-inner">
+						<ul class="bread-list">
+							<li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="blog-single.html">checkout</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Breadcrumbs -->
+			
+	<!-- Shopping Cart -->
+	<section class="shop checkout section">
+        <div class="container">
+            <div class="row"> 
+                <div class="col-lg-8 col-12">
+                    <div class="checkout-form">
+                        <h2>Make Your Checkout Here</h2>
+                        <p>Please register in order to checkout more quickly</p>
+                        <!-- Form -->
+                        <form class="form" method="post" action="/customer/save-order">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>First Name<span>*</span></label>
+                                        <input type="text" name="fname" placeholder="Enter the first name" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Last Name<span>*</span></label>
+                                        <input type="text" name="lname" placeholder="Enter the last name " required="required">
+                                    </div>
+                                </div>
+                               
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Phone Number<span>*</span></label>
+                                        <input type="number" name="number" placeholder="Enter the number" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Country<span>*</span></label>
+                                        <select name="country" id="country">
+                                            <option value="">Select Country</option>
+                                            <option value="IN">India</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>State / Divition<span>*</span></label>
+                                        <select name="state" id="state-province">
+                                            <option value="" >Select State</option>
+                                            <option>Tamil Nadu</option>
+                                            <option>Kerala</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Address Line<span>*</span></label>
+                                        <input type="text" name="address" placeholder="Enter the address" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Postal Code<span>*</span></label>
+                                        <input type="text" name="post" placeholder="Enter the postal code" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Payment<span>*</span></label>
+                                        <select name="payment" id="payment"  onchange="setPayment(this);">
+                                            <option value="">Select payment</option>
+                                            <option value="cod">Cash on delivery</option>
+                                            <option value="online">Online Payment</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="onlinepay">
+
+                                </div>
+                                <div class="single-widget get-button">
+                                    <div class="content">
+                                        <button class="button btn">PLACE ORDER</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <div class="order-details">
+                        <div class="single-widget">
+                            <h2>Your Cart Item's</h2>
+                            <div class="content">
+                                <ul>
+                                    <% allCartData.forEach(function(data){ %>
+                                        <li><%=data.name%><span><%=data.rate * data.qty%></span></li>
+                                    <% }) %>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Order Widget -->
+                        <div class="single-widget">
+                            <h2>CART  TOTALS</h2>
+                            <div class="content">
+                                <ul>
+                                    <li>Sub Total<span>₹<%=cartPrice%>.00</span></li>
+                                    <% if(isCoupon) {%>
+                                        <li>(-) Save<span>20%</span></li>
+                                    <%}%>
+                                    <li>(+) Shipping<span>₹50.00</span></li>
+                                    <li class="last">Total<span>₹<%=cartPrice + 50 %>.00</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="single-widget">
+                            <h2>Your Info</h2>
+                            <div class="content">
+                                <ul>
+                                    <li>Name<span><%=auth.name%></span></li>
+                                    <li>Mobile<span><%=auth.mobile%></span></li>
+                                    <li>Email<span><%=auth.email%></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<script>
+    function setPayment(method)
+    {
+        if(method.value === "online"){
+            $("#onlinepay").replaceWith(
+                '<div class="col-lg-6 col-md-6 col-12">'+
+                    '<div class="form-group">'+
+                        '<label>Holder Name<span>*</span></label>'+
+                        '<input type="text" name="holder_name" placeholder="Enter the holder name" required="required">'+
+                    '</div>'+
+                '</div>'+
+                '<div class="col-lg-6 col-md-6 col-12">'+
+                    '<div class="form-group">'+
+                        '<label>Card Number<span>*</span></label>'+
+                        '<input type="text" name="card_number" placeholder="Enter the card number" required="required">'+
+                    '</div>'+
+                '</div>'+
+                '<div class="col-lg-6 col-md-6 col-12">'+
+                    '<div class="form-group">'+
+                        '<label>Ex-Date<span>*</span></label>'+
+                        '<input type="text" name="ex_date" placeholder="Enter the ex date" required="required">'+
+                    '</div>'+
+                '</div>'+
+                '<div class="col-lg-6 col-md-6 col-12">'+
+                    '<div class="form-group">'+
+                        '<label>CVV<span>*</span></label>'+
+                        '<input type="text" name="cvv" placeholder="Enter the cvv" required="required">'+
+                    '</div>'+
+                '</div>'
+               
+            );
+
+        }
+    }
+</script>
+	<%- include('layout/footer') %>

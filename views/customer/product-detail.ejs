@@ -1,0 +1,153 @@
+<%- include('layout/header',{auth:auth}) %>
+<style type="text/css">
+
+    
+    .con {
+        max-width: 1200px;
+        max-height: 1200px;
+        margin: 0 auto;
+        padding: 15px;
+        display: flex;
+    }
+    
+    /* Columns */
+    .left-column {
+        width: 65%;
+        position: relative;
+    }
+    
+    .right-column {
+        width: 55%;
+        margin-top: 60px;
+    }
+    
+    /* Left Column */
+    .left-column img {
+        width: 50%;
+        heigth: 50%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .left-column img.active {
+        opacity: 1;
+    }
+    
+    /* Right Column */
+    
+    /* Product Description */
+    .product-description {
+        border-bottom: 1px solid #E1E8EE;
+        margin-bottom: 20px;
+    }
+    
+    .product-description span {
+        font-size: 12px;
+        color: #358ED7;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
+    
+    .product-description h1 {
+        font-weight: 300;
+        font-size: 52px;
+        color: #43484D;
+        letter-spacing: -2px;
+    }
+    
+    .product-description p {
+        font-size: 16px;
+        font-weight: 300;
+        color: #86939E;
+        line-height: 24px;
+    }
+    
+    /* Product Price */
+    .product-price {
+        display: flex;
+        align-items: center;
+    }
+    
+    .product-price span {
+        font-size: 26px;
+        font-weight: 300;
+        color: #43474D;
+        margin-right: 20px;
+        align-items: center;
+    }
+    
+    .btn-blue {
+        border: none;
+        border-radius: 10px;
+        background-color: #673AB7;
+        color: #FFFFFF;
+        padding: 8px 15px;
+        margin: 20px 0px;
+        text-align: center;
+        cursor: pointer
+    }
+    
+    .btn-blue:hover {
+        background-color: #64af3d;
+    }
+    
+    </style>
+<div class="breadcrumbs">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="bread-inner">
+						<ul class="bread-list">
+							<li><a href="#">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="blog-single.html">Product Detail</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <section class="product-area shop-sidebar shop section">
+		<main class="container con">
+           
+			<div class="left-column">
+				<img data-image="red" class="active"
+					src="/<%=product[0].image%>" alt="">
+			</div>
+
+
+			<!-- Right Column -->
+			<div class="right-column">
+
+				<!-- Product Description -->
+				<div class="product-description">
+					<span><%=product[0].name%></span>
+					<h1>xc</h1>
+					<span><%=product[0].category%></span>
+					<p><%=product[0].description%></p>
+				</div>
+				 <input type="hidden" id="proId" name="proId" value="">
+				 <input type="hidden" id="cus" name="cus" value="">
+
+				<!-- Product Color -->
+				<div class="product-color">
+					<span>Color : <%=product[0].color%></span>
+				</div>
+            </br>
+				<!-- Product Pricing -->
+				<div class="product-price">
+					<span>₹ <%=product[0].rate%></span> 
+				</div>
+                <div><a class="btn-block btn-blue" href="/customer/add-cart/<%=product[0].id%>"><span id="place">Add Cart</span></a></div>
+			</div>
+
+
+		
+		</main>
+    </section>
+
+
+<%- include('layout/footer') %>

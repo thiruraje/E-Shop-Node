@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<%- include('../layout/headerScripts') %>
+
+    <body class="hold-transition sidebar-mini skin-blue">
+        <div class="wrapper">
+            <%- include('../layout/header') %>
+                <%- include('../layout/nav') %>
+                    <div class="content-wrapper">
+                        <section class="content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="box box-info">
+                                        <div class="box-header">
+                                            <h4>
+                                                <center>Edit Product</center>
+                                            </h4>
+                                            <a href="/admin/view-product"
+                                                class="btn btn-info pull-right">View Product</a>
+                                        </div>
+                                        <div class="box-body">
+                                            <form class="form-horizontal" method="post" action="/admin/update-product/<%=productData.id%>" enctype="multipart/form-data">
+                                                <div class="box-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label>Product Name</label> <input type="text"
+                                                                        class="form-control" value="<%=productData.name%>"
+                                                                        placeholder="Enter product Name" name="name" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label>Product Rate</label> <input type="text"
+                                                                        class="form-control" value="<%=productData.rate%>"
+                                                                        placeholder="Enter product rate" name="rate" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label>Product Category</label> 
+                                                                    <select name="category" class="form-control" >
+                                                                        <option value="">Select Category</option>
+                                                                        <% categoryData.forEach(function(data){ %>
+                                                                            <option value="<%= data.name %>" <%if ((data.name)==productData.category) {%> selected
+                                                                                <%}%> >
+                                                                                <%= data.name %>
+                                                                            </option>
+                                                                        <% }) %>
+                                                                      </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label>Product Color</label> <input type="text"
+                                                                        class="form-control" value="<%=productData.color%>"
+                                                                        placeholder="Enter product color" name="color" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        
+                                                        
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label>Product description</label> <input type="text"
+                                                                        class="form-control" value="<%=productData.description%>"
+                                                                        placeholder="Enter product description" name="description" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label>isOffer</label> 
+                                                                    <select name="isoffer" class="form-control">
+                                                                        <option value="">select</option>
+                                                                            <option value="offer" <%= productData.isoffer ==="offer" ? "selected" : "" %> >offer</option>
+                                                                            <option value="no" <%= productData.isoffer ==="no" ? "selected" : "" %> >no</option>
+                                                                      </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label>Product Image</label> 
+                                                                    <input class="form-control" type="file" id="productImg" name="image" required>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <br>
+                                                    <div align="center">
+                                                        <button type="submit" class="btn btn-info">Save</button>
+                                                    </div>
+                                                </div>
+            
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <%- include('../layout/footer') %>
+        </div>
+    </body>
+
+</html>

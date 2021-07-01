@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<%- include('../layout/headerScripts') %>
+
+    <body class="hold-transition sidebar-mini skin-blue">
+        <div class="wrapper">
+            <%- include('../layout/header') %>
+                <%- include('../layout/nav') %>
+                    <div class="content-wrapper">
+                        <section class="content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="box box-info">
+                                        <div class="box-header">
+                                            <h4>
+                                                <center>Detail Customer</center>
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Mobile</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Address</th>
+                                                        <th scope="col">Order Id</th>
+                                                        <th scope="col">Total Amount</th>
+                                                        <th scope="col">Discount</th>
+                                                        <th scope="col">Payment Method</th>
+                                                        <th scope="col">Product</th>
+                                                        <th scope="col">Qty</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% allOrdersInfo.forEach(function(data){ %>
+                                                        <tr>
+                                                            <td><%=data.order.fname %></td>
+                                                            <td><%=data.order.number %></td>
+                                                            <td><%= moment(data.order.created).format( 'MMM-DD-YYYY')%></td>
+                                                            <td><%=data.order.address %>,<%=data.order.state %>,<%=data.order.country %></td>
+                                                            <td><%=data.order.order_id %></td>
+                                                            <td><%=data.order.final_amount %></td>
+                                                            <% if(data.order.isDiscount){ %>
+                                                                <td>Yes</td>
+                                                            <%}else{%>
+                                                                <td>No</td>
+                                                            <%}%>
+                                                            <td><%=data.order.payment_method %></td>
+                                                            <td>
+                                                                <table >
+                                                                    <% data.orderedProducts.forEach(function(data){ %>
+                                                                        <tr >
+                                                                            <td><%=data.name%> </td>
+                                                                        </tr>
+                                                                    <% }) %>
+                                                                </table>
+                
+                                                            </td>
+                                                            <td>
+                                                                <table >
+                                                                    <% data.orderedProducts.forEach(function(data){ %>
+                                                                        <tr >
+                                                                            <td><%=data.qty%> </td>
+                                                                        </tr>
+                                                                    <% }) %>
+                                                                </table>
+                
+                                                            </td>
+                                                            
+                                                            
+                                                        </tr>
+                                                        <% }) %>
+                                                        
+                                                   
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <%- include('../layout/footer') %>
+        </div>
+    </body>
+
+</html>
