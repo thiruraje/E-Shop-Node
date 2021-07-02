@@ -58,4 +58,11 @@ module.exports={
     return callback(data);
     });  
   },
+  productSearchData:function(searchKey,callback){
+    var sql="SELECT * FROM product WHERE name LIKE ?";
+    db.query(sql,['%' + searchKey + '%'], function (err, data, fields) {
+    if (err) throw err;
+    return callback(data);
+    });  
+  },
 }

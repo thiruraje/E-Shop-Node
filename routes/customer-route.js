@@ -28,6 +28,7 @@ router.get('/home-category/:name',homeController.productList);
 router.get('/product-list',productController.productListPage);
 router.get('/product-detail/:id',productController.productDetail);
 router.get('/product-category/:name',productController.productList);
+router.post('/search',productController.search);
 
 
 router.get('/cart',cartController.cartList);

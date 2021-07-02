@@ -1,5 +1,12 @@
 <%- include('layout/header',{auth:auth}) %>
-<div class="breadcrumbs">
+	<style>
+		#loading {
+			text-align: center;
+			background: url('https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif') no-repeat center;
+			height: 150px;
+		}
+	</style>
+	<div class="breadcrumbs">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
@@ -13,66 +20,144 @@
 			</div>
 		</div>
 	</div>
-<section class="product-area shop-sidebar shop section">
 
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-3 col-md-4 col-12">
-						<div class="shop-sidebar">
-								<!-- Single Widget -->
-								<div class="single-widget category">
-									<h3 class="title">Categories</h3>
-									<ul class="categor-list">
-										<%categoryData.forEach(function(data){ %>
-											<li><a href="/customer/product-category/<%=data.name%>"><%=data.name%></a></li>
-										<% }) %>
-									</ul>
-								</div>
-
+	<section class="product-area shop-sidebar shop section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-4 col-12">
+					<div class="shop-sidebar">
+						<!-- Single Widget -->
+						<div class="single-widget category">
+							<h3 class="title">Categories</h3>
+							<ul class="categor-list">
+								<%categoryData.forEach(function(data){ %>
+									<li><a href="/customer/product-category/<%=data.name%>">
+											<%=data.name%>
+										</a></li>
+									<% }) %>
+							</ul>
 						</div>
+
 					</div>
-					<div class="col-lg-9 col-md-8 col-12">
-						<div class="row">
-							<div class="col-12">
-								
-	
-							</div>
-						</div>
-						<div class="row">
-							<% productList.forEach(function(data){ %>
-								<div class="col-lg-4 col-md-6 col-12">
-									<div class="single-product">
-										<div class="product-img">
-											<a href="/customer/product-detail/<%=data.id%>">
-												<img class="default-img" src="/<%=data.image %>" alt="#">
-												<img class="hover-img" src="/<%=data.image %>" alt="#">
-												<%if(data.isoffer === "offer"){%>
-													<span class="price-dec">Offer</span>
-												<%}%>
-											</a>
-											<div class="button-head">
-												<div class="product-action">
-													<a title="Compare" href="/customer/add-cart/<%=data.id%>"><i class="ti-bag"></i><span>Add to cart</span></a>
-												</div>
-												<div class="product-action-2">
-													<a title="Add to cart" href="/customer/add-cart/<%=data.id%>">Add to cart</a>
-												</div>
-											</div>
-										</div>
-										<div class="product-content">
-											<h3><a href="/customer/product-detail/<%=data.id%>"><%=data.name%></a></h3>
-											<div class="product-price">
-												<span>₹<%=data.rate%>.00</span>
-											</div>
+				</div>
+				<div class="col-lg-9 col-md-8 col-12">
+					<div class="row">
+						<div class="col-12">
+							<header class="header shop">
+								<div class="container">
+									<div class="search-bar-top">
+										<div class="search-bar">
+											<input name="search" id="search" placeholder="Search Products Here....."
+												type="search">
+											<button class="btnn" id="search_product"><i class="ti-search"></i></button>
 										</div>
 									</div>
 								</div>
-								
-							<% }) %>
+							</header>
+
 						</div>
 					</div>
+					<div class="row filter_data">
+
+					</div>
+					<!-- <div class="row">
+						<% productList.forEach(function(data){ %>
+							<div class="col-lg-4 col-md-6 col-12">
+								<div class="single-product">
+									<div class="product-img">
+										<a href="/customer/product-detail/<%=data.id%>">
+											<img class="default-img" src="/<%=data.image %>" alt="#">
+											<img class="hover-img" src="/<%=data.image %>" alt="#">
+											<%if(data.isoffer==="offer" ){%>
+												<span class="price-dec">Offer</span>
+												<%}%>
+										</a>
+										<div class="button-head">
+											<div class="product-action">
+												<a title="Compare" href="/customer/add-cart/<%=data.id%>"><i
+														class="ti-bag"></i><span>Add to cart</span></a>
+											</div>
+											<div class="product-action-2">
+												<a title="Add to cart" href="/customer/add-cart/<%=data.id%>">Add to
+													cart</a>
+											</div>
+										</div>
+									</div>
+									<div class="product-content">
+										<h3><a href="/customer/product-detail/<%=data.id%>">
+												<%=data.name%>
+											</a></h3>
+										<div class="product-price">
+											<span>₹<%=data.rate%>.00</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<% }) %>
+					</div> -->
 				</div>
 			</div>
-		</section>
+		</div>
+	</section>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			filter_data("");
+			$("#search").keyup(function () {
+				var searchData = $("#search").val();
+				console.log(searchData)
+				filter_data(searchData);
+			});
+			function filter_data(searchData) {
+				$('.filter_data').html('<div id="loading" style="" ></div>');
+				$.ajax({
+					url: "/customer/search",
+					method: "POST",
+					data: { search_data: searchData },
+					success: function (data) {
+						if(data.length >0){
+							for (var i = 0; i < data.length; i++) {
+								var product = $('<div class="col-lg-4 col-md-6 col-12">' +
+									'<div class="single-product">' +
+									'<div class="product-img">' +
+									'<a href="/customer/product-detail/' + data[i].id + '">' +
+									'<img class="default-img" src="/' + data[i].image + '" alt="#">' +
+									'<img class="hover-img" src="/' + data[i].image + '" alt="#">' +
+									'<div class="button-head">' +
+									'<div class="product-action">' +
+									'<a title="Compare" href="/customer/add-cart/' + data[i].id + '"><i' +
+									'class= "ti-bag" ></i > <span>Add to cart</span></a > ' +
+									'</div>' +
+									'<div class="product-action-2">' +
+									'<a title="Add to cart" href="/customer/add-cart/' + data[i].id + '">Add to' +
+									'cart</a>' +
+									'</div>' +
+									'</div>' +
+									'</div>' +
+									'<div class="product-content">' +
+									'<h3><a href="/customer/product-detail/' + data[i].id + '">' +
+									'' + data[i].name + '' +
+									'</a></h3>' +
+									'<div class="product-price">' +
+									'<span>₹' + data[i].rate + '.00</span>' +
+									'</div>' +
+									'</div>' +
+									'</div>' +
+									'</div>');
+								$('.filter_data').append(product);
+							}
+						}else{
+							$('.filter_data').append(
+								'<div >' +
+									' No Data Found '+
+								'</div>' 
+							);
+						}
+					}
+				});
+			}
+		});
+	</script>
 
-<%- include('layout/footer') %>
+	<%- include('layout/footer') %>

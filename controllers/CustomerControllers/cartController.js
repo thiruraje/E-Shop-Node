@@ -48,7 +48,6 @@ module.exports={
         }
     },
     updateQty:function(req, res) {
-        console.log(req.body.new_quantity)
         cartModel.updateQty(req.body.cart_id,req.body.new_quantity,function(data){
            res.send('success');
         });
