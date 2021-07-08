@@ -21,7 +21,7 @@ router.get('/logout',authController.logout);
 
 
 router.get('/home',homeController.home);
-router.get('/home-category/:name',homeController.productList);
+router.post('/home-category',homeController.productList);
 
 
 

@@ -16,13 +16,16 @@ home:function(req, res) {
     }  
 },
 productList:function(req, res) {
-    const categoryName=req.params.name;
-    categoryModel.readData(function(categoryData){
+    const categoryName=req.body.category_name;
+    if(categoryName != ""){
         productModel.productBycategory(categoryName,function(productBycategory){
-            res.render('customer/index', {categoryData:categoryData, productList:productBycategory,auth:req.session.customer[0]});
+            res.send(productBycategory);
         });
-    });
-    
+    }else{
+        productModel.readData(function(productList){
+            res.send(productList);
+        });
+    }
 },
 
 }

@@ -41,7 +41,7 @@
 								<ul class="nav nav-tabs" id="myTab" role="tablist">
 									<% if(categoryData.length!=0){ var i=1;
 										categoryData.forEach(function(data){ %>
-											<li class="nav-item"><a class="nav-link"  href="/customer/home-category/<%=data.name%>" role="tab"><%=data.name%></a></li>
+											<li class="nav-item"><a class="nav-link" onclick="category('<%=data.name%>');" role="tab"><%=data.name%></a></li>
 										<% i++; }) %>
 										<% } else{ %>
 										<tr>
@@ -53,38 +53,8 @@
 							<div class="tab-content" id="myTabContent">
 								<div class="tab-pane fade show active" id="man" role="tabpanel">
 									<div class="tab-single">
-										<div class="row">
-											<% productList.forEach(function(data){ %>
-												<div class="col-xl-3 col-lg-4 col-md-4 col-12">
-													<div class="single-product">
-														<div class="product-img">
-															<a href="/customer/product-detail/<%=data.id%>">
-																<img class="default-img" src="/<%=data.image %>" alt="#">
-																<img class="hover-img" src="/<%=data.image %>" alt="#">
-																<%if(data.isoffer === "offer"){%>
-																<span class="price-dec">Offer</span>
-																<%}%>
-															</a>
-															<div class="button-head">
-																<div class="product-action">
-																	<a title="Compare" href="/customer/add-cart/<%=data.id%>"><i class="ti-bag"></i><span>Add to cart</span></a>
-																</div>
-																<div class="product-action-2">
-																	<a title="Add to cart" href="/customer/add-cart/<%=data.id%>">Add to cart</a>
-																</div>
-															</div>
-														</div>
-														<div class="product-content">
-															<h3><a href="/customer/product-detail/<%=data.id%>"><%=data.name%></a></h3>
-															<div class="product-price">
-																<span>₹<%=data.rate%>.00</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											<% }) %>
-											
-											
+										<div class="row filter_data">
+
 										</div>
 									</div>
 								</div>
@@ -95,4 +65,62 @@
             </div>
 
     </div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			filter_data("");
+			category = function(categoryName) { //now has global scope.
+				filter_data(categoryName);
+			};
+			function filter_data(categoryName) {
+				$('.filter_data').html('<div id="loading" style="" ></div>');
+				$.ajax({
+					url: "/customer/home-category",
+					method: "POST",
+					data: { category_name: categoryName },
+					success: function (data) {
+						if(data.length >0){
+							for (var i = 0; i < data.length; i++) {
+								var product = $('<div class="col-xl-3 col-lg-4 col-md-4 col-12">' +
+									'<div class="single-product">' +
+									'<div class="product-img">' +
+									'<a href="/customer/product-detail/' + data[i].id + '">' +
+									'<img class="default-img" src="/' + data[i].image + '" alt="#">' +
+									'<img class="hover-img" src="/' + data[i].image + '" alt="#">' +
+									'<div class="button-head">' +
+									'<div class="product-action">' +
+									'<a title="Compare" href="/customer/add-cart/' + data[i].id + '"><i' +
+									'class= "ti-bag" ></i > <span>Add to cart</span></a > ' +
+									'</div>' +
+									'<div class="product-action-2">' +
+									'<a title="Add to cart" href="/customer/add-cart/' + data[i].id + '">Add to' +
+									'cart</a>' +
+									'</div>' +
+									'</div>' +
+									'</div>' +
+									'<div class="product-content">' +
+									'<h3><a href="/customer/product-detail/' + data[i].id + '">' +
+									'' + data[i].name + '' +
+									'</a></h3>' +
+									'<div class="product-price">' +
+									'<span>₹' + data[i].rate + '.00</span>' +
+									'</div>' +
+									'</div>' +
+									'</div>' +
+									'</div>');
+								$('.filter_data').append(product);
+							}
+						}else{
+							$('.filter_data').append(
+								'<div >' +
+									' No Data Found '+
+								'</div>' 
+							);
+						}
+					}
+				});
+			}
+			
+		});
+	</script>
 <%- include('layout/footer') %>

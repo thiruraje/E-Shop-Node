@@ -58,11 +58,22 @@ module.exports={
     return callback(data);
     });  
   },
-  productSearchData:function(searchKey,callback){
-    var sql="SELECT * FROM product WHERE name LIKE ?";
-    db.query(sql,['%' + searchKey + '%'], function (err, data, fields) {
-    if (err) throw err;
-    return callback(data);
-    });  
+  productSearchData:function(searchKey,categories,callback){
+    if(categories !== undefined){
+      var sql="SELECT * FROM product WHERE name LIKE ? AND category IN (?)";
+      db.query(sql,['%' + searchKey + '%',categories], function (err, data, fields) {
+      if (err) throw err;
+      return callback(data);
+      });
+
+    }else{
+      var sql="SELECT * FROM product WHERE name LIKE ? ";
+      db.query(sql,['%' + searchKey + '%'], function (err, data, fields) {
+      if (err) throw err;
+      return callback(data);
+      });
+
+    }
+     
   },
 }
